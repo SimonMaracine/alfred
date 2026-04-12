@@ -80,6 +80,7 @@ namespace alfred::synthesizer {
         std::unordered_map<syn::InstrumentId, syn::InstrumentPtr> m_instruments;
 
         // Instruments mixer
+        // See https://www.usenix.org/legacy/event/hotpar11/tech/final_files/Boehm.pdf
         std::unordered_map<syn::InstrumentId, std::atomic<syn::volume::Volume>> m_volumes;
 
         // Current "active" voices that produce sounds

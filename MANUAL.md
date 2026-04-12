@@ -22,7 +22,13 @@ Alfred's synthesizer works differently depending on whether the player is curren
 
 The virtual keyboard always plays at full velocity (loudness).
 
-One can edit and create new instruments or presets from the `Instrument` menu. `Create` brings up the menu with the last parameters. `Edit` brings up the menu with the parameters of an existing instrument. `Load` loads a preset file from disk. From the `Create Instrument` menu one can save the current parameters to preset file on disk or to store the instrument into the synthesizer, whether creating a new one or updating an existing one.
+One can edit and create new instruments or presets from the `Instrument` menu. `Create` brings up the menu with the last parameters. `Edit` brings up the menu with the parameters of an existing instrument. `Load` loads a preset file from disk. From the `Create Instrument` menu one can save the current parameters to a preset file on disk or to store the instrument into the synthesizer, whether creating a new one or updating an existing one.
+
+One can choose to create instruments using an additive synthesis method or using Paul's PadSynth algorithm.
+
+The `Instrument` dropdown selector from `Instruments & Synthesizer` displays the currently loaded instruments in the synthesizer's memory.
+
+Alfred automatically loads preset files from the `presets` directory on disk. `Help -> Presets Directory`
  
 ## Composition
 

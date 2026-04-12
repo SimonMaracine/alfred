@@ -25,7 +25,7 @@ Alfred is split into two main parts:
 Currently, Alfred is in its infancy, so its current instruments are not well-made, and it is still missing some important features, which will probably be addressed with time:
 
 - Plugins which dynamically add compiled instruments/presets
-- A graphical way to create, store and load runtime instruments/presets
+- ~~A graphical way to create, store and load runtime instruments/presets~~
 - Support for MIDI keyboard controllers
 - ~~Presenting errors nicely instead of just silently logging them~~
 

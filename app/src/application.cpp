@@ -1793,7 +1793,7 @@ namespace alfred::application {
     void Application::create_instrument_add() {
         ImGui::Dummy(ui::rem(ImVec2(0.0f, 0.5f)));
 
-        if (ImGui::Button("Add Partial")) {
+        if (ImGui::Button("Add Component")) {
             auto& partial = m_ui.preset_add.partials.emplace_back();
             partial.envelope.type = ui::preset::EnvelopeTypeNull;
         }
@@ -1917,7 +1917,7 @@ namespace alfred::application {
 
         ImGui::Dummy(ui::rem(ImVec2(0.0f, 0.5f)));
 
-        if (ImGui::Button("Add Amplitude")) {
+        if (ImGui::Button("Add Component")) {
             m_ui.preset_pad.amplitude_harmonics.push_back(ui::preset::PresetPad::DEFAULT_AMPLITUDE);
         }
 
@@ -1938,6 +1938,8 @@ namespace alfred::application {
                 ImGui::SameLine();
 
                 ImGui::DragScalar("##Amplitude", ImGuiDataType_Double, &amplitude_harmonic, DRAG_SPEED_SLOW, &ZERO, &ONE, "%.3f", ImGuiSliderFlags_ClampOnInput);
+
+                ImGui::SetItemTooltip("Amplitude");
 
                 ImGui::PopID();
             }
