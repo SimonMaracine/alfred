@@ -152,8 +152,25 @@ namespace alfred::preset {
     }
 
     namespace pad {
-        static double profile_square(double frequency, double bandwidth) {
+        // https://www.desmos.com/calculator/ejhicuxbr4
+
+        static double profile_even(double frequency, double bandwidth) {
             return std::max((-std::pow(frequency / bandwidth, 100.0) + 1.0) / bandwidth, 0.0);
+        }
+
+        static double profile_single_sine(double frequency, double bandwidth) {
+            const double x = frequency / bandwidth;
+            return std::max((-100.0 * x * x + 1.0) / bandwidth, 0.0);
+        }
+
+        static double profile_two_sines(double frequency, double bandwidth) {
+            const double x = frequency / bandwidth;
+            return std::max((-std::abs(-4.0 * x * x + 4.0) + 1.0) / bandwidth, 0.0);
+        }
+
+        static double profile_arc(double frequency, double bandwidth) {
+            const double x = frequency / (3.0 * bandwidth);
+            return std::max((-x * x + 1.0) / bandwidth, 0.0);
         }
 
         RuntimeInstrument::RuntimeInstrument(Preset preset)
@@ -196,8 +213,14 @@ namespace alfred::preset {
             switch (preset.profile) {
                 case Profile::Gaussian:
                     return nullptr;
-                case Profile::Square:
-                    return profile_square;
+                case Profile::Even:
+                    return profile_even;
+                case Profile::SingleSine:
+                    return profile_single_sine;
+                case Profile::DoubleSine:
+                    return profile_two_sines;
+                case Profile::Arc:
+                    return profile_arc;
             }
 
             std::unreachable();

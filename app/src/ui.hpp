@@ -201,7 +201,10 @@ namespace alfred::ui {
 
         enum Profile : int {
             ProfileGaussian,
-            ProfileSquare
+            ProfileEven,
+            ProfileSingleSine,
+            ProfileDoubleSine,
+            ProfileArc
         };
 
         struct PresetPad : BasePreset {

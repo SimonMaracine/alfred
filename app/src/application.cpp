@@ -1899,7 +1899,7 @@ namespace alfred::application {
     void Application::create_instrument_pad() {
         ImGui::Dummy(ui::rem(ImVec2(0.0f, 0.5f)));
 
-        constexpr const char* PROFILE[] { "Gaussian", "Square" };
+        constexpr const char* PROFILE[] { "Gaussian", "Even", "Single Sine", "Double Sine", "Arc" };
 
         if (ImGui::BeginCombo("Profile", PROFILE[m_ui.preset_pad.profile])) {
             for (std::size_t i {}; i < std::size(PROFILE); i++) {
@@ -3449,8 +3449,17 @@ namespace alfred::application {
             case ui::preset::ProfileGaussian:
                 result_preset.profile = preset::pad::Profile::Gaussian;
                 break;
-            case ui::preset::ProfileSquare:
-                result_preset.profile = preset::pad::Profile::Square;
+            case ui::preset::ProfileEven:
+                result_preset.profile = preset::pad::Profile::Even;
+                break;
+            case ui::preset::ProfileSingleSine:
+                result_preset.profile = preset::pad::Profile::SingleSine;
+                break;
+            case ui::preset::ProfileDoubleSine:
+                result_preset.profile = preset::pad::Profile::DoubleSine;
+                break;
+            case ui::preset::ProfileArc:
+                result_preset.profile = preset::pad::Profile::Arc;
                 break;
         }
 
@@ -3469,8 +3478,17 @@ namespace alfred::application {
             case preset::pad::Profile::Gaussian:
                 result_preset.profile = ui::preset::ProfileGaussian;
                 break;
-            case preset::pad::Profile::Square:
-                result_preset.profile = ui::preset::ProfileSquare;
+            case preset::pad::Profile::Even:
+                result_preset.profile = ui::preset::ProfileEven;
+                break;
+            case preset::pad::Profile::SingleSine:
+                result_preset.profile = ui::preset::ProfileSingleSine;
+                break;
+            case preset::pad::Profile::DoubleSine:
+                result_preset.profile = ui::preset::ProfileDoubleSine;
+                break;
+            case preset::pad::Profile::Arc:
+                result_preset.profile = ui::preset::ProfileArc;
                 break;
         }
 
