@@ -152,6 +152,7 @@ namespace alfred::application {
         void start_player();
         void stop_player();
         void seek_player(std::uint32_t position);
+        void seek_player_to_start();
         void modify_composition();
         void modify_composition_metadata();
         void invalidate_composition();

@@ -721,7 +721,7 @@ namespace alfred::application {
 
         if (ImGui::Begin("Playback", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize)) {
             if (ImGui::ImageButton("Rewind", reinterpret_cast<ImTextureID>(m_ui.texture_rewind.get()), SIZE, UV0, UV1, COLOR_BACKGROUND, COLOR_FOREGROUND)) {
-                seek_player(0);
+                seek_player_to_start();
             }
 
             ImGui::SetItemTooltip("Rewind the player to the beginning (Backspace)");
@@ -1367,7 +1367,7 @@ namespace alfred::application {
         }
 
         if (ImGui::Shortcut(ImGuiKey_Backspace, ImGuiInputFlags_RouteGlobal)) {
-            seek_player(0);
+            seek_player_to_start();
         }
 
         if (ImGui::Shortcut(ImGuiMod_Ctrl | ImGuiKey_P, ImGuiInputFlags_RouteAlways)) {
@@ -2870,6 +2870,11 @@ namespace alfred::application {
         }
 
         m_player.seek(position);
+    }
+
+    void Application::seek_player_to_start() {
+        seek_player(0);
+        m_composition_camera.x = 0.0f;
     }
 
     void Application::modify_composition() {
