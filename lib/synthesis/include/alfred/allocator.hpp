@@ -8,7 +8,7 @@
 // Global static stateless allocator
 
 namespace alfred::allocator {
-    template<std::size_t StorageSize, std::size_t BlockSize, std::size_t BlockAlignment>
+    template<std::size_t StorageSize, std::size_t BlockSize, std::size_t BlockAlignment, bool Throw = false>
     struct StaticAllocatorStorage {
     private:
         static consteval std::size_t calculate_block_size() {
@@ -25,6 +25,7 @@ namespace alfred::allocator {
         static constexpr auto STORAGE_SIZE = StorageSize;
         static constexpr auto BLOCK_SIZE = calculate_block_size();
         static constexpr auto BLOCK_ALIGNMENT = BlockAlignment;
+        static constexpr bool THROW = Throw;
 
         alignas(BLOCK_ALIGNMENT) unsigned char m_base[STORAGE_SIZE * BLOCK_SIZE] {};
         bool m_blocks[STORAGE_SIZE] {};
@@ -59,11 +60,11 @@ namespace alfred::allocator {
                 }
             }
 
-#ifdef ALLOCATOR_THROW_ON_FAILURE
-            throw std::bad_alloc();
-#else
+            if constexpr (Storage::THROW) {
+                throw std::bad_alloc();
+            }
+
             std::unreachable();
-#endif
         }
 
         void deallocate(value_type* p, size_type n) {
