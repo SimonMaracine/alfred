@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.20)
 project(
     "alfred-syn-seq"
     VERSION "0.6.0"
-    DESCRIPTION "A cross-platform synthesizer, sequencer and composition editor program"
+    DESCRIPTION "A cross-platform audio synthesizer, sequencer and composition editor program"
     HOMEPAGE_URL "https://github.com/SimonMaracine/alfred-syn-seq"
     LANGUAGES CXX
 )

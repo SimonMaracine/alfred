@@ -1,1 +1,1 @@
-Alfred is a free and open source cross-platform synthesizer, sequencer and composition editor program, which allows you to synthesize different instruments and to compose and play music.
+Alfred is a free and open source cross-platform audio synthesizer, sequencer and composition editor program, which allows you to synthesize different instruments and to compose and play music.
