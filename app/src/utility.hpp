@@ -9,7 +9,9 @@
 namespace alfred::utility {
     // Managed generic buffer of memory
     // Note that it always has an extra zero byte at the end not included in the size
-    using Buffer = std::string;
+    struct Buffer {
+        std::string data;
+    };
 
     // Read and write file into buffers
     void read_file(const std::filesystem::path& path, Buffer& buffer);

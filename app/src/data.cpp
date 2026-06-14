@@ -21,11 +21,11 @@ namespace alfred::data {
             throw DataError("Unexpected error writing to stream");
         }
 
-        buffer = stream.str();
+        buffer.data = stream.str();
     }
 
     void import_data(Data& data, const utility::Buffer& buffer) {
-        std::istringstream stream {buffer, std::ios_base::binary};
+        std::istringstream stream {buffer.data, std::ios_base::binary};
         stream.exceptions(std::ios_base::failbit);
 
         try {

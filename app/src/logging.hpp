@@ -48,7 +48,7 @@ namespace alfred::logging {
     template<Severity severity, typename... Args>
     void log(const std::source_location& location, std::format_string<Args...> fmt, Args&&... args) {
         const auto time = chrono::system_clock::now();
-        const TimeOfDay time_of_day {chrono::floor<chrono::seconds>(time - chrono::floor<chrono::days>(time))};
+        const auto time_of_day = TimeOfDay(chrono::floor<chrono::seconds>(time - chrono::floor<chrono::days>(time)));
         const auto message = std::format(fmt, std::forward<Args>(args)...);
 
         println_console(severity, location, time_of_day, message);
@@ -105,7 +105,7 @@ namespace alfred::logging {
     template<typename... Args>
     critical(std::format_string<Args...> fmt, Args&&... args) -> critical<Args...>;
 
-    struct LoggingError : ::alfred::error::Error {
+    struct LoggingError : alfred::error::Error {
         using Error::Error;
 
         ALFRED_ERROR_NAME(LoggingError)

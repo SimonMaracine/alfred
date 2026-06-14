@@ -76,6 +76,6 @@ namespace alfred::encoder {
             throw EncoderError("Error writing to stream");
         }
 
-        return stream.str();
+        return utility::Buffer { stream.str() };
     }
 }

@@ -26,12 +26,12 @@ namespace alfred::preset {
                 throw PresetError("Unexpected error writing to stream");
             }
 
-            buffer = stream.str();
+            buffer.data = stream.str();
         }
 
         template<typename Preset>
         static void import_preset(Preset& preset, const utility::Buffer& buffer) {
-            std::istringstream stream {buffer};
+            std::istringstream stream {buffer.data};
             stream.exceptions(std::ios_base::failbit);
 
             try {

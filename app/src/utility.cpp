@@ -19,8 +19,8 @@ namespace alfred::utility {
         const auto size = stream.tellg();
         stream.seekg(0, stream.beg);
 
-        buffer.resize(std::size_t(size));
-        stream.read(buffer.data(), size);
+        buffer.data.resize(std::size_t(size));
+        stream.read(buffer.data.data(), size);
 
         if (stream.fail()) {
             throw FileError("Could not read from file");
@@ -34,7 +34,7 @@ namespace alfred::utility {
             throw FileError("Could not open file");
         }
 
-        stream.write(buffer.data(), std::streamsize(buffer.size()));
+        stream.write(buffer.data.data(), std::streamsize(buffer.data.size()));
 
         if (stream.fail()) {
             throw FileError("Could not write to file");

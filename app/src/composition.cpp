@@ -24,11 +24,11 @@ namespace alfred::composition {
             throw CompositionError("Unexpected error writing to stream");
         }
 
-        buffer = stream.str();
+        buffer.data = stream.str();
     }
 
     void import_composition(Composition& composition, const utility::Buffer& buffer) {
-        std::istringstream stream {buffer, std::ios_base::binary};
+        std::istringstream stream {buffer.data, std::ios_base::binary};
         stream.exceptions(std::ios_base::failbit);
 
         try {
