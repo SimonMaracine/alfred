@@ -19,7 +19,7 @@ namespace alfred::logging {
         Critical
     };
 
-    constexpr const char* severity_to_string(Severity severity) {
+    constexpr const char* to_string(Severity severity) {
         switch (severity) {
             case Severity::Debug:
                 return "Debug";
@@ -49,7 +49,7 @@ namespace alfred::logging {
     void log(const std::source_location& location, std::format_string<Args...> fmt, Args&&... args) {
         const auto time = chrono::system_clock::now();
         const auto time_of_day = TimeOfDay(chrono::floor<chrono::seconds>(time - chrono::floor<chrono::days>(time)));
-        const auto message = std::format(fmt, std::forward<Args>(args)...);
+        const auto message = std::format(std::move(fmt), std::forward<Args>(args)...);
 
         println_console(severity, location, time_of_day, message);
         println_file(severity, location, time_of_day, message);
@@ -58,7 +58,7 @@ namespace alfred::logging {
     template<typename... Args>
     struct debug {
         explicit debug(std::format_string<Args...> fmt, Args&&... args, const std::source_location& location = std::source_location::current()) {
-            log<Severity::Debug>(location, fmt, std::forward<Args>(args)...);
+            log<Severity::Debug>(location, std::move(fmt), std::forward<Args>(args)...);
         }
     };
 
@@ -68,7 +68,7 @@ namespace alfred::logging {
     template<typename... Args>
     struct information {
         explicit information(std::format_string<Args...> fmt, Args&&... args, const std::source_location& location = std::source_location::current()) {
-            log<Severity::Information>(location, fmt, std::forward<Args>(args)...);
+            log<Severity::Information>(location, std::move(fmt), std::forward<Args>(args)...);
         }
     };
 
@@ -78,7 +78,7 @@ namespace alfred::logging {
     template<typename... Args>
     struct warning {
         explicit warning(std::format_string<Args...> fmt, Args&&... args, const std::source_location& location = std::source_location::current()) {
-            log<Severity::Warning>(location, fmt, std::forward<Args>(args)...);
+            log<Severity::Warning>(location, std::move(fmt), std::forward<Args>(args)...);
         }
     };
 
@@ -88,7 +88,7 @@ namespace alfred::logging {
     template<typename... Args>
     struct error {
         explicit error(std::format_string<Args...> fmt, Args&&... args, const std::source_location& location = std::source_location::current()) {
-            log<Severity::Error>(location, fmt, std::forward<Args>(args)...);
+            log<Severity::Error>(location, std::move(fmt), std::forward<Args>(args)...);
         }
     };
 
@@ -98,7 +98,7 @@ namespace alfred::logging {
     template<typename... Args>
     struct critical {
         explicit critical(std::format_string<Args...> fmt, Args&&... args, const std::source_location& location = std::source_location::current()) {
-            log<Severity::Critical>(location, fmt, std::forward<Args>(args)...);
+            log<Severity::Critical>(location, std::move(fmt), std::forward<Args>(args)...);
         }
     };
 
