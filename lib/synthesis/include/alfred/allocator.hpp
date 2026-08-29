@@ -9,7 +9,7 @@
 
 namespace alfred::allocator {
     template<std::size_t StorageSize, std::size_t BlockSize, std::size_t BlockAlignment, bool Throw = false>
-    struct StaticAllocatorStorage {
+    class StaticAllocatorStorage {
     private:
         static consteval std::size_t calculate_block_size() {
             const auto quot = BlockSize / BlockAlignment;  // TODO __cpp_lib_constexpr_cmath is still undefined
@@ -27,6 +27,15 @@ namespace alfred::allocator {
         static constexpr auto BLOCK_ALIGNMENT = BlockAlignment;
         static constexpr bool THROW = Throw;
 
+        static_assert(
+            BLOCK_ALIGNMENT == 1 ||
+            BLOCK_ALIGNMENT == 2 ||
+            BLOCK_ALIGNMENT == 4 ||
+            BLOCK_ALIGNMENT == 8 ||
+            BLOCK_ALIGNMENT == 16,
+            "Invalid block alignment"
+        );
+
         alignas(BLOCK_ALIGNMENT) unsigned char m_base[STORAGE_SIZE * BLOCK_SIZE] {};
         bool m_blocks[STORAGE_SIZE] {};
         std::size_t m_pointer {};
@@ -42,11 +51,19 @@ namespace alfred::allocator {
         using value_type = T;
         using size_type = std::size_t;
 
-        static_assert(sizeof(T) <= Storage::BLOCK_SIZE);
-        static_assert(alignof(T) <= Storage::BLOCK_ALIGNMENT);
+        static_assert(sizeof(T) <= Storage::BLOCK_SIZE, "Type doesn't fit into the block size; increase the block size");
+        static_assert(alignof(T) <= Storage::BLOCK_ALIGNMENT, "Type has stricter alignment requirements than the block; increase the block alignment");
 
         value_type* allocate(size_type n) {
             auto& storage = Storage::get();
+
+            if (n > storage.STORAGE_SIZE) {
+                if constexpr (Storage::THROW) {
+                    throw std::bad_alloc();
+                }
+
+                std::unreachable();
+            }
 
             for (size_type i = storage.m_pointer; i < storage.STORAGE_SIZE - n + 1; i++) {
                 if (try_allocate(storage, i, n)) {
@@ -70,8 +87,8 @@ namespace alfred::allocator {
         void deallocate(value_type* p, size_type n) {
             auto& storage = Storage::get();
 
-            const size_type block_pointer = reinterpret_cast<size_type>(p) - reinterpret_cast<size_type>(storage.m_base);
-            const size_type index = block_pointer / Storage::BLOCK_SIZE;
+            const auto block_pointer = reinterpret_cast<size_type>(p) - reinterpret_cast<size_type>(storage.m_base);
+            const auto index = block_pointer / Storage::BLOCK_SIZE;
 
             std::for_each(storage.m_blocks + index, storage.m_blocks + index + n, [](bool& block) { block = false; });
         }

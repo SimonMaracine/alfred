@@ -119,7 +119,7 @@ namespace alfred::syn {
     }
 
     namespace envelope {
-        using Storage = allocator::StaticAllocatorStorage<keyboard::NOTES * 10, 96, 8>;
+        using Storage = allocator::StaticAllocatorStorage<keyboard::NOTES * 10, 96, 8, true>;
 
         // Abstract class representing an envelope
         // Envelopes use a custom allocator; they are usually dynamically allocated
@@ -297,9 +297,9 @@ namespace alfred::syn {
 
     namespace voice {
 #ifdef ALFRED_WINDOWS  // Windows in debug mode is just stupid
-        using Storage = allocator::StaticAllocatorStorage<keyboard::NOTES, 88, 8>;
+        using Storage = allocator::StaticAllocatorStorage<keyboard::NOTES, 88, 8, true>;
 #else
-        using Storage = allocator::StaticAllocatorStorage<keyboard::NOTES, 72, 8>;
+        using Storage = allocator::StaticAllocatorStorage<keyboard::NOTES, 72, 8, true>;
 #endif
 
         // A voice represents a particular sound made by some instrument at some point in time in the synthesizer
@@ -329,7 +329,13 @@ namespace alfred::syn {
         };
 
         struct VoiceAdd : Voice, allocator::StaticAllocated<VoiceAdd, Storage> {
-            std::vector<envelope::Ptr> partial_envelopes;
+            // The following vector itself allocates dynamically pointers of envelopes
+            // Ensure we avoid those dynamic allocations; an upper bound is probably fine :D
+            using EnvelopesStorage = allocator::StaticAllocatorStorage<1024, 8, 8, true>;
+            using PartialEnvelopes = std::vector<envelope::Ptr, allocator::StaticAllocator<envelope::Ptr, EnvelopesStorage>>;
+
+            // Vector of envelopes corresponding to the vector of partials
+            PartialEnvelopes partial_envelopes;
 
             void note_on(double time) override;
             void note_off(double time) override;

@@ -126,7 +126,7 @@ namespace alfred::preset {
         }
 
         syn::voice::Ptr RuntimeInstrument::new_voice() const {
-            std::vector<syn::envelope::Ptr> partial_envelopes;
+            syn::voice::VoiceAdd::PartialEnvelopes partial_envelopes;
 
             for (std::size_t i {}; i < m_preset.partials.size(); i++) {
                 partial_envelopes.push_back(generic::new_partial_envelope(m_preset, i));

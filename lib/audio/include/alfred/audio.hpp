@@ -93,6 +93,6 @@ namespace alfred::audio {
     };
 
     struct AudioError : std::runtime_error {
-        using std::runtime_error::runtime_error;
+        using runtime_error::runtime_error;
     };
 }
